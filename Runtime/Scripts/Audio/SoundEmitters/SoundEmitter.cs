@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -54,12 +53,14 @@ public class SoundEmitter : MonoBehaviour
 
 	public float FadeMusicOut(float duration)
 	{
-		StartCoroutine(FadeAudioSource.StartFade(_audioSource, duration, 0f));
+		StartCoroutine(StartFadeOut(_audioSource, duration, 0f));
 
 		return _audioSource.time;
 	}
 	
 	public static class FadeAudioSource {
+
+		
 
 		public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
 		{
@@ -74,6 +75,13 @@ public class SoundEmitter : MonoBehaviour
 			}
 			yield break;
 		}
+	}
+	
+	public IEnumerator StartFadeOut(AudioSource audioSource, float duration, float targetVolume)
+	{
+		var retval = FadeAudioSource.StartFade(audioSource, duration, targetVolume);
+		OnFadeOutComplete();
+		yield return retval;
 	}
 
 	private void OnFadeOutComplete()
